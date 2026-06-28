@@ -1,1284 +1,586 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Loujein Bousnina - Embedded Systems & IoT Engineer based in Tunis">
-    <title>Loujein Bousnina | Embedded Systems & IoT Engineer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        /* ===== RESET & VARIABLES ===== */
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-        :root {
-            --bg-primary: #050a14;
-            --bg-secondary: #0b1426;
-            --bg-card: rgba(255,255,255,0.04);
-            --accent-cyan: #00d4ff;
-            --accent-purple: #9b5cf6;
-            --accent-green: #00ff88;
-            --text-primary: #e6edf3;
-            --text-secondary: #8b949e;
-            --border: rgba(0, 212, 255, 0.15);
-            --glow-cyan: 0 0 30px rgba(0, 212, 255, 0.25);
-            --glow-purple: 0 0 30px rgba(155, 92, 246, 0.25);
-        }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            font-family: 'Space Grotesk', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* ===== SCROLLBAR ===== */
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-track { background: var(--bg-primary); }
-        ::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 3px; }
-
-        /* ===== SELECTION ===== */
-        ::selection { background: rgba(0,212,255,0.3); color: var(--text-primary); }
-
-        /* ===== BACKGROUND LAYERS ===== */
-        #particles-js {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .circuit-bg {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.025;
-            background-image:
-                linear-gradient(rgba(0,212,255,1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,212,255,1) 1px, transparent 1px);
-            background-size: 70px 70px;
-        }
-
-        /* ===== NAVBAR ===== */
-        nav {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            z-index: 1000;
-            padding: 1.25rem 3rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            background: rgba(5, 10, 20, 0.75);
-            border-bottom: 1px solid var(--border);
-            transition: all 0.35s ease;
-        }
-
-        .nav-logo {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.1rem;
-            color: var(--accent-cyan);
-            text-decoration: none;
-            letter-spacing: 1px;
-        }
-
-        .nav-logo span { color: var(--text-primary); }
-
-        .nav-links {
-            display: flex;
-            gap: 2.5rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.875rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px; left: 0;
-            width: 0; height: 1.5px;
-            background: var(--accent-cyan);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover { color: var(--accent-cyan); }
-        .nav-links a:hover::after { width: 100%; }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            padding: 4px;
-        }
-
-        .hamburger span {
-            display: block;
-            width: 24px; height: 2px;
-            background: var(--accent-cyan);
-            border-radius: 2px;
-            transition: all 0.3s;
-        }
-
-        /* ===== HERO ===== */
-        #hero {
-            position: relative;
-            z-index: 1;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 7rem 2rem 3rem;
-        }
-
-        .hero-content {
-            text-align: center;
-            max-width: 820px;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            background: rgba(0, 212, 255, 0.08);
-            border: 1px solid rgba(0, 212, 255, 0.25);
-            border-radius: 50px;
-            padding: 0.45rem 1.3rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.78rem;
-            color: var(--accent-cyan);
-            margin-bottom: 2rem;
-            animation: fadeInDown 0.8s ease 0.2s both;
-            letter-spacing: 0.5px;
-        }
-
-        .status-dot {
-            width: 8px; height: 8px;
-            background: var(--accent-green);
-            border-radius: 50%;
-            animation: pulse-dot 2s ease-in-out infinite;
-            flex-shrink: 0;
-        }
-
-        .hero-name {
-            font-size: clamp(2.8rem, 7vw, 5.5rem);
-            font-weight: 700;
-            line-height: 1.05;
-            margin-bottom: 1.2rem;
-            animation: fadeInUp 0.8s ease 0.4s both;
-        }
-
-        .hero-name .first { color: var(--text-primary); }
-
-        .hero-name .last {
-            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-typed-line {
-            font-size: clamp(1rem, 2.5vw, 1.35rem);
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            animation: fadeInUp 0.8s ease 0.6s both;
-            min-height: 2em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .typed-prefix { color: var(--accent-purple); font-family: 'JetBrains Mono', monospace; }
-        #typed { color: var(--accent-cyan); }
-
-        .hero-desc {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            max-width: 560px;
-            margin: 0 auto 2.8rem;
-            line-height: 1.85;
-            animation: fadeInUp 0.8s ease 0.8s both;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 0.8s ease 1s both;
-        }
-
-        /* ===== BUTTONS ===== */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.55rem;
-            padding: 0.85rem 2rem;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            letter-spacing: 0.4px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-            font-family: 'Space Grotesk', sans-serif;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            color: #fff;
-            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(0, 212, 255, 0.4);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--accent-cyan);
-            border: 1.5px solid var(--accent-cyan);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(0, 212, 255, 0.08);
-            transform: translateY(-3px);
-            box-shadow: var(--glow-cyan);
-        }
-
-        /* ===== SCROLL INDICATOR ===== */
-        .hero-scroll {
-            position: absolute;
-            bottom: 2.5rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text-secondary);
-            font-size: 0.72rem;
-            font-family: 'JetBrains Mono', monospace;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            animation: fadeIn 1s ease 1.5s both;
-        }
-
-        .scroll-line {
-            width: 1.5px;
-            height: 48px;
-            background: linear-gradient(to bottom, var(--accent-cyan), transparent);
-            animation: scroll-anim 2s ease-in-out infinite;
-        }
-
-        /* ===== SECTION LAYOUT ===== */
-        .section-wrapper {
-            position: relative;
-            z-index: 1;
-        }
-
-        section {
-            padding: 6rem 3rem;
-            max-width: 1150px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.78rem;
-            color: var(--accent-cyan);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 0.8rem;
-            display: block;
-        }
-
-        .section-title {
-            font-size: clamp(1.8rem, 4vw, 2.8rem);
-            font-weight: 700;
-        }
-
-        .section-line {
-            width: 55px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-            margin: 1rem auto 0;
-            border-radius: 2px;
-        }
-
-        /* ===== ABOUT ===== */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.6fr;
-            gap: 4.5rem;
-            align-items: center;
-        }
-
-        .about-visual { position: relative; }
-
-        .about-avatar {
-            width: 100%;
-            max-width: 300px;
-            aspect-ratio: 1;
-            border-radius: 20px;
-            background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(155,92,246,0.08));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 7rem;
-            border: 1.5px solid var(--border);
-            position: relative;
-            overflow: hidden;
-            margin: 0 auto;
-        }
-
-        .about-avatar::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 30% 30%, rgba(0,212,255,0.12), transparent 60%);
-        }
-
-        .about-corner {
-            position: absolute;
-            width: 36px; height: 36px;
-            border-color: var(--accent-cyan);
-            border-style: solid;
-        }
-
-        .about-corner.tl { top: -6px; left: -6px; border-width: 2px 0 0 2px; border-radius: 4px 0 0 0; }
-        .about-corner.br { bottom: -6px; right: -6px; border-width: 0 2px 2px 0; border-radius: 0 0 4px 0; }
-
-        .about-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.85rem;
-            margin-top: 1.5rem;
-        }
-
-        .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1rem;
-            text-align: center;
-            backdrop-filter: blur(12px);
-            transition: border-color 0.3s ease;
-        }
-
-        .stat-card:hover { border-color: rgba(0, 212, 255, 0.4); }
-
-        .stat-number {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--accent-cyan);
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .stat-label {
-            font-size: 0.72rem;
-            color: var(--text-secondary);
-            margin-top: 0.2rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .about-text h3 {
-            font-size: 1.65rem;
-            margin-bottom: 1rem;
-        }
-
-        .about-text h3 span { color: var(--accent-cyan); }
-
-        .about-text p {
-            color: var(--text-secondary);
-            margin-bottom: 1.4rem;
-            line-height: 1.85;
-            font-size: 0.95rem;
-        }
-
-        .about-info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .info-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            font-size: 0.875rem;
-        }
-
-        .info-item i {
-            color: var(--accent-cyan);
-            width: 16px;
-            margin-top: 2px;
-            flex-shrink: 0;
-        }
-
-        .info-item span { color: var(--text-secondary); display: block; font-size: 0.75rem; }
-        .info-item strong { color: var(--text-primary); display: block; }
-
-        /* ===== SKILLS ===== */
-        .skills-categories { display: flex; flex-direction: column; gap: 3rem; }
-
-        .skill-category-title {
-            font-size: 0.85rem;
-            color: var(--accent-cyan);
-            font-family: 'JetBrains Mono', monospace;
-            margin-bottom: 1.4rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .skill-category-title::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
-            gap: 1rem;
-        }
-
-        .skill-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 1.3rem 1rem;
-            text-align: center;
-            backdrop-filter: blur(12px);
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            cursor: default;
-        }
-
-        .skill-card:hover {
-            border-color: var(--accent-cyan);
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: var(--glow-cyan);
-            background: rgba(0, 212, 255, 0.06);
-        }
-
-        .skill-icon {
-            font-size: 2rem;
-            margin-bottom: 0.6rem;
-            display: block;
-            line-height: 1;
-        }
-
-        .skill-name {
-            font-size: 0.78rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .skill-card:hover .skill-name { color: var(--text-primary); }
-
-        /* ===== PROJECTS ===== */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .project-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 1.8rem;
-            backdrop-filter: blur(12px);
-            transition: all 0.35s ease;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.4s ease;
-        }
-
-        .project-card:hover::before { transform: scaleX(1); }
-
-        .project-card:hover {
-            border-color: rgba(0, 212, 255, 0.3);
-            transform: translateY(-7px);
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), var(--glow-cyan);
-        }
-
-        .project-header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            margin-bottom: 1.1rem;
-        }
-
-        .project-icon { font-size: 2.4rem; line-height: 1; }
-
-        .project-links { display: flex; gap: 1rem; }
-
-        .project-links a {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            transition: color 0.25s, transform 0.25s;
-            text-decoration: none;
-        }
-
-        .project-links a:hover { color: var(--accent-cyan); transform: scale(1.15); }
-
-        .project-card h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.7rem;
-        }
-
-        .project-card p {
-            font-size: 0.865rem;
-            color: var(--text-secondary);
-            line-height: 1.75;
-            flex: 1;
-            margin-bottom: 1.3rem;
-        }
-
-        .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-
-        .tag {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 50px;
-            background: rgba(0, 212, 255, 0.07);
-            border: 1px solid rgba(0, 212, 255, 0.2);
-            color: var(--accent-cyan);
-            letter-spacing: 0.3px;
-        }
-
-        /* ===== CONTACT ===== */
-        .contact-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1.1fr;
-            gap: 4rem;
-            align-items: start;
-        }
-
-        .contact-info h3 {
-            font-size: 1.9rem;
-            line-height: 1.3;
-            margin-bottom: 1rem;
-        }
-
-        .contact-info h3 span { color: var(--accent-cyan); }
-
-        .contact-info p {
-            color: var(--text-secondary);
-            line-height: 1.85;
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
-        }
-
-        .contact-links { display: flex; flex-direction: column; gap: 0.9rem; }
-
-        .contact-link {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1.1rem 1.3rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            text-decoration: none;
-            color: var(--text-primary);
-            transition: all 0.3s ease;
-            backdrop-filter: blur(12px);
-        }
-
-        .contact-link:hover {
-            border-color: rgba(0,212,255,0.4);
-            transform: translateX(7px);
-            background: rgba(0,212,255,0.04);
-        }
-
-        .contact-link i {
-            font-size: 1.25rem;
-            color: var(--accent-cyan);
-            width: 24px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        .contact-link-text strong { display: block; font-size: 0.875rem; margin-bottom: 0.1rem; }
-        .contact-link-text span { font-size: 0.78rem; color: var(--text-secondary); }
-
-        /* ===== CONTACT FORM ===== */
-        .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
-
-        .form-group { display: flex; flex-direction: column; gap: 0.45rem; }
-
-        .form-group label {
-            font-size: 0.82rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-            letter-spacing: 0.3px;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 0.9rem 1.1rem;
-            color: var(--text-primary);
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(12px);
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
-            background: rgba(0,212,255,0.02);
-        }
-
-        .form-group textarea { resize: vertical; min-height: 130px; }
-
-        .form-group input::placeholder,
-        .form-group textarea::placeholder { color: rgba(139,148,158,0.5); }
-
-        /* ===== FOOTER ===== */
-        footer {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 2rem;
-            border-top: 1px solid var(--border);
-            color: var(--text-secondary);
-            font-size: 0.82rem;
-            letter-spacing: 0.3px;
-        }
-
-        footer span { color: var(--accent-cyan); }
-
-        /* ===== ANIMATIONS ===== */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(28px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to   { opacity: 1; }
-        }
-
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50%       { opacity: 0.4; transform: scale(0.7); }
-        }
-
-        @keyframes scroll-anim {
-            0%   { transform: scaleY(0); transform-origin: top;    opacity: 1; }
-            50%  { transform: scaleY(1); transform-origin: top;    opacity: 1; }
-            51%  { transform: scaleY(1); transform-origin: bottom;             }
-            100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
-        }
-
-        /* ===== SCROLL REVEAL ===== */
-        .reveal {
-            opacity: 0;
-            transform: translateY(28px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
-        }
-
-        .reveal-left {
-            opacity: 0;
-            transform: translateX(-28px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
-        }
-
-        .reveal-right {
-            opacity: 0;
-            transform: translateX(28px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
-        }
-
-        .reveal.visible,
-        .reveal-left.visible,
-        .reveal-right.visible {
-            opacity: 1;
-            transform: translate(0);
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 900px) {
-            nav { padding: 1rem 1.5rem; }
-            section { padding: 5rem 1.5rem; }
-            .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-            .contact-wrapper { grid-template-columns: 1fr; gap: 2.5rem; }
-            .projects-grid { grid-template-columns: 1fr; }
-            .about-info-grid { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 640px) {
-            .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: rgba(5,10,20,0.98); padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); gap: 1.5rem; }
-            .nav-links.open { display: flex; }
-            .hamburger { display: flex; }
-            .hero-buttons { flex-direction: column; align-items: center; }
-            .skills-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loujein Bousnina | Embedded Systems & IoT Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --cyan:#00d4ff;--purple:#9b5cf6;--green:#00ff88;--pink:#ff3cac;
+  --bg:#060b18;--bg2:#0b1526;--card:rgba(255,255,255,0.04);
+  --text:#e6edf3;--muted:#8b949e;--border:rgba(0,212,255,0.15);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6;cursor:none}
+::selection{background:rgba(0,212,255,0.25)}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--cyan);border-radius:2px}
+
+/* ── CURSOR ── */
+#cursor{position:fixed;width:10px;height:10px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .1s,width .2s,height .2s,opacity .2s;box-shadow:0 0 15px var(--cyan)}
+#cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid rgba(0,212,255,.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .15s ease,width .2s,height .2s,opacity .3s}
+body:has(a:hover,button:hover,.skill-card:hover,.project-card:hover) #cursor{width:18px;height:18px;background:var(--purple)}
+body:has(a:hover,button:hover,.skill-card:hover,.project-card:hover) #cursor-ring{width:56px;height:56px;border-color:rgba(155,92,246,.5)}
+
+/* ── PROGRESS BAR ── */
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--pink));z-index:1001;width:0%;transition:width .1s linear;border-radius:0 2px 2px 0}
+
+/* ── PARTICLES ── */
+#particles-js{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ── GRID BG ── */
+.grid-bg{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.018;background-image:linear-gradient(rgba(0,212,255,1) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,1) 1px,transparent 1px);background-size:65px 65px}
+
+/* ── ORBS ── */
+.orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0;animation:orb-float 10s ease-in-out infinite}
+.orb1{width:500px;height:500px;background:rgba(0,212,255,.07);top:-100px;right:-100px;animation-delay:0s}
+.orb2{width:400px;height:400px;background:rgba(155,92,246,.08);bottom:10%;left:-80px;animation-delay:-4s}
+.orb3{width:300px;height:300px;background:rgba(255,60,172,.05);top:50%;right:20%;animation-delay:-7s}
+@keyframes orb-float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-40px) scale(1.05)}}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.1rem 3rem;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(24px);background:rgba(6,11,24,.8);border-bottom:1px solid var(--border);transition:all .3s}
+.nav-logo{font-family:'JetBrains Mono',monospace;font-size:1.05rem;color:var(--cyan);text-decoration:none;letter-spacing:1px}
+.nav-logo span{color:var(--text)}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.875rem;font-weight:500;transition:color .3s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1.5px;background:var(--cyan);transition:width .3s}
+.nav-links a:hover{color:var(--cyan)}
+.nav-links a:hover::after{width:100%}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:none;padding:4px}
+.hamburger span{display:block;width:24px;height:2px;background:var(--cyan);border-radius:2px;transition:all .3s}
+
+/* ── HERO ── */
+#hero{position:relative;z-index:1;min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:4rem;padding:8rem 3rem 3rem;max-width:1150px;margin:0 auto}
+.hero-text{}
+.hero-badge{display:inline-flex;align-items:center;gap:.6rem;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.25);border-radius:50px;padding:.4rem 1.2rem;font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--cyan);margin-bottom:1.8rem;animation:fadeUp .8s ease .2s both;letter-spacing:.5px}
+.status-dot{width:7px;height:7px;background:var(--green);border-radius:50%;flex-shrink:0;animation:pulse-dot 2s infinite}
+.hero-name{font-size:clamp(2.8rem,5.5vw,5rem);font-weight:700;line-height:1.05;margin-bottom:1rem;animation:fadeUp .8s ease .4s both}
+.hero-name .first{color:var(--text)}
+.hero-name .last{background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;position:relative}
+.hero-name .last::after{content:attr(data-text);position:absolute;left:0;top:0;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0;clip-path:inset(0 100% 0 0);animation:glitch-clip 8s ease-in-out infinite 2s}
+@keyframes glitch-clip{0%,90%,100%{clip-path:inset(0 100% 0 0);opacity:0}92%{clip-path:inset(20% 0 60% 0);opacity:.8}94%{clip-path:inset(60% 0 20% 0);opacity:.8}96%{clip-path:inset(0 100% 0 0);opacity:0}}
+.hero-typed-line{font-size:clamp(.95rem,2vw,1.2rem);color:var(--muted);margin-bottom:1.4rem;animation:fadeUp .8s ease .6s both;min-height:2em;display:flex;align-items:center;gap:.5rem}
+.typed-prefix{color:var(--purple);font-family:'JetBrains Mono',monospace}
+#typed{color:var(--cyan)}
+.hero-desc{font-size:.95rem;color:var(--muted);line-height:1.85;margin-bottom:2.5rem;animation:fadeUp .8s ease .8s both}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;animation:fadeUp .8s ease 1s both}
+.btn{display:inline-flex;align-items:center;gap:.55rem;padding:.85rem 2rem;border-radius:10px;font-size:.875rem;font-weight:600;text-decoration:none;transition:all .3s;cursor:none;border:none;font-family:'Space Grotesk',sans-serif}
+.btn-primary{background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;box-shadow:0 4px 24px rgba(0,212,255,.2)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 36px rgba(0,212,255,.4)}
+.btn-secondary{background:transparent;color:var(--cyan);border:1.5px solid var(--cyan)}
+.btn-secondary:hover{background:rgba(0,212,255,.08);transform:translateY(-3px);box-shadow:0 0 30px rgba(0,212,255,.2)}
+
+/* ── HERO PHOTO ── */
+.hero-photo-wrap{position:relative;display:flex;align-items:center;justify-content:center;animation:fadeUp .8s ease .5s both}
+.photo-ring{position:relative;width:340px;height:340px;flex-shrink:0}
+.photo-ring::before{content:'';position:absolute;inset:-3px;border-radius:50%;background:conic-gradient(from 0deg,var(--cyan),var(--purple),var(--pink),var(--cyan));animation:spin-ring 4s linear infinite;z-index:0}
+.photo-ring::after{content:'';position:absolute;inset:-8px;border-radius:50%;background:conic-gradient(from 180deg,var(--purple),var(--pink),var(--cyan),var(--purple));animation:spin-ring 7s linear infinite reverse;z-index:0;opacity:.4}
+@keyframes spin-ring{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.photo-inner{position:absolute;inset:4px;border-radius:50%;overflow:hidden;z-index:1;background:var(--bg2)}
+.photo-inner img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.photo-badge{position:absolute;bottom:10px;right:-20px;background:rgba(6,11,24,.9);border:1px solid var(--border);border-radius:12px;padding:.7rem 1rem;display:flex;align-items:center;gap:.6rem;backdrop-filter:blur(12px);z-index:2;animation:float 3s ease-in-out infinite;white-space:nowrap}
+.photo-badge i{color:var(--cyan)}
+.photo-badge span{font-size:.75rem;font-weight:600}
+.photo-badge2{position:absolute;top:20px;left:-25px;background:rgba(6,11,24,.9);border:1px solid var(--border);border-radius:12px;padding:.7rem 1rem;display:flex;align-items:center;gap:.6rem;backdrop-filter:blur(12px);z-index:2;animation:float 3.5s ease-in-out infinite .5s;white-space:nowrap}
+.photo-badge2 i{color:var(--purple)}
+.photo-badge2 span{font-size:.75rem;font-weight:600}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* ── SCROLL INDICATOR ── */
+.hero-scroll{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;color:var(--muted);font-size:.7rem;font-family:'JetBrains Mono',monospace;letter-spacing:2px;text-transform:uppercase;animation:fadeIn 1s .2s 1.5s both}
+.scroll-line{width:1.5px;height:44px;background:linear-gradient(to bottom,var(--cyan),transparent);animation:scroll-anim 2s ease-in-out infinite}
+@keyframes scroll-anim{0%{transform:scaleY(0);transform-origin:top;opacity:1}50%{transform:scaleY(1);transform-origin:top;opacity:1}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom;opacity:0}}
+
+/* ── SECTIONS ── */
+.s-wrap{position:relative;z-index:1}
+section{padding:6rem 3rem;max-width:1150px;margin:0 auto}
+.s-head{text-align:center;margin-bottom:4rem}
+.s-label{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--cyan);letter-spacing:3px;text-transform:uppercase;margin-bottom:.8rem;display:block}
+.s-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700}
+.s-line{width:55px;height:3px;background:linear-gradient(90deg,var(--cyan),var(--purple));margin:1rem auto 0;border-radius:2px}
+
+/* ── ABOUT ── */
+.about-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:4rem;align-items:center}
+.about-img-wrap{position:relative}
+.about-photo{width:100%;max-width:300px;aspect-ratio:3/4;border-radius:20px;overflow:hidden;border:1px solid var(--border);margin:0 auto;position:relative}
+.about-photo img{width:100%;height:100%;object-fit:cover;object-position:top center}
+.about-photo::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 60%,rgba(6,11,24,.8));z-index:1}
+.corner{position:absolute;width:32px;height:32px;border-color:var(--cyan);border-style:solid}
+.corner.tl{top:-6px;left:-6px;border-width:2px 0 0 2px;border-radius:4px 0 0 0}
+.corner.br{bottom:-6px;right:-6px;border-width:0 2px 2px 0;border-radius:0 0 4px 0}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-top:1.5rem}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem;text-align:center;backdrop-filter:blur(12px);transition:border-color .3s}
+.stat-card:hover{border-color:rgba(0,212,255,.4)}
+.stat-num{font-size:1.8rem;font-weight:700;color:var(--cyan);font-family:'JetBrains Mono',monospace}
+.stat-lbl{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:.2rem}
+.about-text h3{font-size:1.6rem;margin-bottom:1rem}
+.about-text h3 span{color:var(--cyan)}
+.about-text p{color:var(--muted);margin-bottom:1.3rem;line-height:1.85;font-size:.95rem}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2rem}
+.info-item{display:flex;align-items:flex-start;gap:.7rem;font-size:.875rem}
+.info-item i{color:var(--cyan);width:16px;margin-top:2px;flex-shrink:0}
+.info-item span{color:var(--muted);display:block;font-size:.72rem}
+.info-item strong{display:block;color:var(--text)}
+
+/* ── SKILLS ── */
+.skill-cats{display:flex;flex-direction:column;gap:3rem}
+.cat-title{font-size:.82rem;color:var(--cyan);font-family:'JetBrains Mono',monospace;margin-bottom:1.4rem;display:flex;align-items:center;gap:1rem}
+.cat-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:1rem}
+.skill-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem 1rem;text-align:center;backdrop-filter:blur(12px);transition:all .3s cubic-bezier(.34,1.56,.64,1);cursor:none;position:relative;overflow:hidden}
+.skill-card::before{content:'';position:absolute;inset:-1px;border-radius:14px;background:linear-gradient(135deg,var(--cyan),var(--purple));z-index:-1;opacity:0;transition:opacity .3s}
+.skill-card:hover{transform:translateY(-5px) scale(1.03);box-shadow:0 8px 32px rgba(0,212,255,.2)}
+.skill-card:hover::before{opacity:1}
+.skill-card:hover .sk-bg{opacity:1}
+.sk-bg{position:absolute;inset:1px;border-radius:13px;background:var(--bg2);z-index:0;opacity:0;transition:opacity .3s}
+.skill-icon{font-size:2rem;margin-bottom:.6rem;display:block;line-height:1;position:relative;z-index:1}
+.skill-name{font-size:.75rem;color:var(--muted);font-weight:500;transition:color .3s;position:relative;z-index:1}
+.skill-card:hover .skill-name{color:var(--text)}
+
+/* ── PROJECTS ── */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem}
+.project-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.8rem;backdrop-filter:blur(12px);transition:border-color .35s,box-shadow .35s;position:relative;overflow:hidden;display:flex;flex-direction:column;transform-style:preserve-3d}
+.project-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--purple));transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+.project-card:hover::before{transform:scaleX(1)}
+.project-card:hover{border-color:rgba(0,212,255,.3);box-shadow:0 25px 60px rgba(0,0,0,.5),0 0 40px rgba(0,212,255,.12)}
+.proj-glow{position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(0,212,255,.07),transparent 60%);pointer-events:none;opacity:0;transition:opacity .3s}
+.project-card:hover .proj-glow{opacity:1}
+.proj-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1rem}
+.proj-icon{font-size:2.4rem;line-height:1}
+.proj-links{display:flex;gap:1rem}
+.proj-links a{color:var(--muted);font-size:1.1rem;transition:color .25s,transform .25s;text-decoration:none;cursor:none}
+.proj-links a:hover{color:var(--cyan);transform:scale(1.15)}
+.project-card h3{font-size:1.05rem;font-weight:600;margin-bottom:.7rem}
+.project-card p{font-size:.855rem;color:var(--muted);line-height:1.75;flex:1;margin-bottom:1.2rem}
+.tags{display:flex;flex-wrap:wrap;gap:.5rem}
+.tag{font-family:'JetBrains Mono',monospace;font-size:.68rem;padding:.25rem .7rem;border-radius:50px;background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.2);color:var(--cyan)}
+
+/* ── CONTACT ── */
+.contact-wrap{display:grid;grid-template-columns:1fr 1.1fr;gap:4rem;align-items:start}
+.contact-info h3{font-size:1.8rem;line-height:1.3;margin-bottom:1rem}
+.contact-info h3 span{color:var(--cyan)}
+.contact-info p{color:var(--muted);line-height:1.85;margin-bottom:2rem;font-size:.95rem}
+.c-links{display:flex;flex-direction:column;gap:.9rem}
+.c-link{display:flex;align-items:center;gap:1rem;padding:1.1rem 1.3rem;background:var(--card);border:1px solid var(--border);border-radius:14px;text-decoration:none;color:var(--text);transition:all .3s;backdrop-filter:blur(12px);cursor:none}
+.c-link:hover{border-color:rgba(0,212,255,.4);transform:translateX(7px);background:rgba(0,212,255,.04)}
+.c-link i{font-size:1.2rem;color:var(--cyan);width:22px;text-align:center;flex-shrink:0}
+.c-link strong{display:block;font-size:.85rem;margin-bottom:.1rem}
+.c-link span{font-size:.77rem;color:var(--muted)}
+.c-form{display:flex;flex-direction:column;gap:1.2rem}
+.fg{display:flex;flex-direction:column;gap:.4rem}
+.fg label{font-size:.8rem;color:var(--muted);font-weight:500;letter-spacing:.3px}
+.fg input,.fg textarea{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:.9rem 1.1rem;color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:.9rem;transition:all .3s;backdrop-filter:blur(12px)}
+.fg input:focus,.fg textarea:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(0,212,255,.1);background:rgba(0,212,255,.02)}
+.fg textarea{resize:vertical;min-height:120px}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(139,148,158,.4)}
+
+/* ── FOOTER ── */
+footer{position:relative;z-index:1;text-align:center;padding:2rem;border-top:1px solid var(--border);color:var(--muted);font-size:.8rem}
+footer span{color:var(--cyan)}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal-l{opacity:0;transform:translateX(-28px);transition:opacity .7s ease,transform .7s ease}
+.reveal-r{opacity:0;transform:translateX(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.on,.reveal-l.on,.reveal-r.on{opacity:1;transform:translate(0)}
+
+/* ── SHIMMER NAME ── */
+.hero-name .last{background:linear-gradient(90deg,var(--cyan) 0%,var(--purple) 40%,var(--pink) 60%,var(--cyan) 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear infinite}
+@keyframes shimmer{to{background-position:200% center}}
+
+/* ── NEON UNDERLINE DRAW ── */
+.neon-underline{display:block;height:3px;width:0;background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:2px;box-shadow:0 0 12px var(--cyan),0 0 24px rgba(0,212,255,.4);animation:draw-line 1s ease 1.2s forwards;margin-top:.5rem}
+@keyframes draw-line{to{width:100%}}
+
+/* ── CIRCUIT SVG HERO ── */
+.circuit-svg{position:absolute;right:0;top:50%;transform:translateY(-50%);width:420px;height:420px;opacity:.18;pointer-events:none;z-index:0}
+.c-path{stroke:var(--cyan);stroke-width:1.5;fill:none;stroke-dasharray:300;stroke-dashoffset:300;animation:draw-path 3s ease forwards}
+.c-path:nth-child(2){animation-delay:.5s;stroke:var(--purple)}
+.c-path:nth-child(3){animation-delay:1s}
+.c-path:nth-child(4){animation-delay:1.5s;stroke:var(--purple)}
+.c-node{fill:var(--cyan);animation:node-pulse 2s ease-in-out infinite}
+.c-node:nth-child(odd){animation-delay:.5s;fill:var(--purple)}
+@keyframes draw-path{to{stroke-dashoffset:0}}
+@keyframes node-pulse{0%,100%{r:3;opacity:1}50%{r:5;opacity:.6}}
+
+/* ── WAVE DIVIDERS ── */
+.wave{width:100%;overflow:hidden;line-height:0;pointer-events:none;margin:-1px 0}
+.wave svg{display:block;width:100%;height:50px}
+.wave.flip{transform:scaleY(-1)}
+
+/* ── SKILL BARS ── */
+.skill-bars-wrap{margin-top:2.5rem;display:flex;flex-direction:column;gap:1.2rem}
+.sb-item{}
+.sb-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;font-size:.8rem}
+.sb-name{color:var(--text);font-weight:500;display:flex;align-items:center;gap:.5rem}
+.sb-name i{color:var(--cyan);width:14px}
+.sb-pct{color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:.75rem}
+.sb-track{height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden}
+.sb-fill{height:100%;border-radius:3px;width:0;background:linear-gradient(90deg,var(--cyan),var(--purple));box-shadow:0 0 10px rgba(0,212,255,.4);transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.sb-fill.glow{box-shadow:0 0 16px rgba(0,212,255,.6)}
+
+/* ── BACK TO TOP ── */
+#btt{position:fixed;bottom:2rem;right:2rem;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;border:none;cursor:pointer;z-index:500;display:flex;align-items:center;justify-content:center;font-size:1.1rem;opacity:0;transform:translateY(20px);transition:all .3s ease;box-shadow:0 4px 20px rgba(0,212,255,.3)}
+#btt.show{opacity:1;transform:translateY(0)}
+#btt::before{content:'';position:absolute;inset:-4px;border-radius:50%;border:2px solid rgba(0,212,255,.4);animation:btt-pulse 2s ease-in-out infinite}
+@keyframes btt-pulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.2);opacity:0}}
+#btt:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,212,255,.5)}
+
+/* ── RIPPLE ── */
+.btn{position:relative;overflow:hidden}
+.ripple{position:absolute;border-radius:50%;transform:scale(0);background:rgba(255,255,255,.3);animation:ripple-anim .65s linear;pointer-events:none;width:80px;height:80px;margin-left:-40px;margin-top:-40px}
+@keyframes ripple-anim{to{transform:scale(4);opacity:0}}
+
+/* ── SPOTLIGHT PROJECT CARD ── */
+.project-card.spotlight{grid-column:1/-1;display:grid;grid-template-columns:1.2fr 1fr;gap:2rem;align-items:center;background:linear-gradient(135deg,rgba(0,212,255,.06),rgba(155,92,246,.06));border-color:rgba(0,212,255,.25)}
+.project-card.spotlight .spotlight-frame{border:1.5px solid var(--border);border-radius:14px;background:var(--bg2);padding:1.5rem;position:relative;overflow:hidden}
+.project-card.spotlight .spotlight-frame::before{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(0,212,255,.08),transparent);animation:frame-scan 3s ease-in-out infinite 2s}
+@keyframes frame-scan{to{left:160%}}
+.spotlight-dots{display:flex;gap:.5rem;margin-bottom:1rem}
+.spotlight-dots span{width:10px;height:10px;border-radius:50%}
+.spotlight-dots span:nth-child(1){background:#ff5f57}
+.spotlight-dots span:nth-child(2){background:#febc2e}
+.spotlight-dots span:nth-child(3){background:#28c840}
+.spotlight-code{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--muted);line-height:2}
+.spotlight-code .kw{color:var(--purple)}
+.spotlight-code .fn{color:var(--cyan)}
+.spotlight-code .str{color:var(--green)}
+.spotlight-code .cm{color:rgba(139,148,158,.5)}
+.spotlight-info{}
+
+/* ── SKILL ICON OVERRIDE (no emojis) ── */
+.skill-icon{font-size:1.6rem;margin-bottom:.6rem;display:flex;align-items:center;justify-content:center;height:2.2rem;color:var(--cyan);transition:color .3s,text-shadow .3s}
+.skill-card:hover .skill-icon{color:var(--text);text-shadow:0 0 12px var(--cyan)}
+
+/* ── PREFERS-REDUCED-MOTION ── */
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  #hero{grid-template-columns:1fr;text-align:center;gap:3rem;padding-top:7rem}
+  .hero-btns{justify-content:center}
+  .photo-ring{width:260px;height:260px}
+  .about-grid{grid-template-columns:1fr}
+  .contact-wrap{grid-template-columns:1fr}
+  section{padding:5rem 1.5rem}
+  nav{padding:1rem 1.5rem}
+}
+@media(max-width:640px){
+  .nav-links{display:none;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(6,11,24,.98);padding:1.5rem 2rem;border-bottom:1px solid var(--border);gap:1.5rem}
+  .nav-links.open{display:flex}
+  .hamburger{display:flex}
+  .skills-grid{grid-template-columns:repeat(3,1fr)}
+  .projects-grid{grid-template-columns:1fr}
+  .photo-badge,.photo-badge2{display:none}
+}
+</style>
 </head>
 <body>
 
-<!-- ===== BACKGROUNDS ===== -->
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<div id="progress"></div>
 <div id="particles-js"></div>
-<div class="circuit-bg"></div>
+<div class="grid-bg"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
 
-<!-- ===== NAVBAR ===== -->
-<nav id="navbar">
-    <a href="#hero" class="nav-logo">&lt;<span>LB</span> /&gt;</a>
-    <ul class="nav-links" id="navLinks">
-        <li><a href="#about" onclick="closeMenu()">About</a></li>
-        <li><a href="#skills" onclick="closeMenu()">Skills</a></li>
-        <li><a href="#projects" onclick="closeMenu()">Projects</a></li>
-        <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
-    </ul>
-    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-        <span></span><span></span><span></span>
-    </div>
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">&lt;<span>LB</span> /&gt;</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about" onclick="closeMenu()">About</a></li>
+    <li><a href="#skills" onclick="closeMenu()">Skills</a></li>
+    <li><a href="#projects" onclick="closeMenu()">Projects</a></li>
+    <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
 </nav>
 
-<!-- ===== HERO ===== -->
-<div class="section-wrapper">
-    <section id="hero">
-        <div class="hero-content">
-            <div class="hero-badge">
-                <div class="status-dot"></div>
-                Available for internships &amp; opportunities
-            </div>
-            <h1 class="hero-name">
-                <span class="first">Bousnina</span><br>
-                <span class="last">Loujein</span>
-            </h1>
-            <div class="hero-typed-line">
-                <span class="typed-prefix">&gt;_</span>
-                <span id="typed"></span>
-            </div>
-            <p class="hero-desc">
-                Passionate about designing intelligent connected systems — from bare-metal firmware
-                to full IoT pipelines. ESPRIT engineering student crafting the future of embedded technology.
-            </p>
-            <div class="hero-buttons">
-                <a href="#projects" class="btn btn-primary">
-                    <i class="fas fa-microchip"></i> View Projects
-                </a>
-                <a href="#contact" class="btn btn-secondary">
-                    <i class="fas fa-paper-plane"></i> Get In Touch
-                </a>
-            </div>
-        </div>
-        <div class="hero-scroll">
-            <span>scroll</span>
-            <div class="scroll-line"></div>
-        </div>
-    </section>
+<!-- HERO -->
+<div class="s-wrap">
+<div style="position:relative;z-index:1;min-height:100vh;display:flex;align-items:center">
+<div id="hero">
+  <div class="hero-text">
+    <div class="hero-badge"><div class="status-dot"></div>Available for opportunities</div>
+    <h1 class="hero-name">
+      <span class="first">Bousnina</span><br>
+      <span class="last" data-text="Loujein">Loujein</span>
+    </h1>
+    <span class="neon-underline"></span>
+    <div class="hero-typed-line"><span class="typed-prefix">&gt;_</span><span id="typed"></span></div>
+    <p class="hero-desc">Passionate about building intelligent connected systems — from bare-metal firmware to full IoT pipelines. ESPRIT engineering student crafting the future of embedded technology.</p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-primary"><i class="fas fa-microchip"></i>View Projects</a>
+      <a href="#contact" class="btn btn-secondary"><i class="fas fa-paper-plane"></i>Get In Touch</a>
+    </div>
+  </div>
+  <div class="hero-photo-wrap" style="position:relative">
+    <svg class="circuit-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <path class="c-path" d="M40,200 L100,200 L100,100 L200,100 L200,60"/>
+      <path class="c-path" d="M360,200 L300,200 L300,300 L200,300 L200,340"/>
+      <path class="c-path" d="M200,60 L280,60 L280,140 L340,140"/>
+      <path class="c-path" d="M60,140 L120,140 L120,300 L200,300"/>
+      <circle class="c-node" cx="100" cy="200" r="3"/>
+      <circle class="c-node" cx="100" cy="100" r="3"/>
+      <circle class="c-node" cx="200" cy="100" r="3"/>
+      <circle class="c-node" cx="300" cy="200" r="3"/>
+      <circle class="c-node" cx="300" cy="300" r="3"/>
+      <circle class="c-node" cx="200" cy="300" r="3"/>
+      <circle class="c-node" cx="280" cy="60" r="4"/>
+      <circle class="c-node" cx="120" cy="140" r="4"/>
+      <rect x="195" y="55" width="10" height="10" fill="none" stroke="var(--cyan)" stroke-width="1.5" opacity=".7"/>
+      <rect x="295" y="195" width="10" height="10" fill="none" stroke="var(--purple)" stroke-width="1.5" opacity=".7"/>
+      <rect x="95" y="195" width="10" height="10" fill="none" stroke="var(--cyan)" stroke-width="1.5" opacity=".7"/>
+    </svg>
+    <div class="photo-ring">
+      <div class="photo-inner">
+        <img src="data:image/png;base64,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" alt="Loujein Bousnina">
+      </div>
+    </div>
+    <div class="photo-badge"><i class="fas fa-microchip"></i><span>Embedded Systems</span></div>
+    <div class="photo-badge2"><i class="fas fa-wifi"></i><span>IoT Developer</span></div>
+  </div>
+</div>
+<div class="hero-scroll"><span>scroll</span><div class="scroll-line"></div></div>
+</div>
 </div>
 
-<!-- ===== ABOUT ===== -->
-<div class="section-wrapper">
-    <section id="about">
-        <div class="section-header reveal">
-            <span class="section-label">// 01. about</span>
-            <h2 class="section-title">Who Am I?</h2>
-            <div class="section-line"></div>
-        </div>
-        <div class="about-grid">
-            <div class="about-visual reveal-left">
-                <div class="about-avatar">
-                    <span style="position:relative;z-index:1;filter:drop-shadow(0 0 20px rgba(0,212,255,0.4))">👩‍💻</span>
-                    <div class="about-corner tl"></div>
-                    <div class="about-corner br"></div>
-                </div>
-                <div class="about-stats">
-                    <div class="stat-card">
-                        <div class="stat-number">6+</div>
-                        <div class="stat-label">Projects</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">3+</div>
-                        <div class="stat-label">Years</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">10+</div>
-                        <div class="stat-label">Technologies</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">∞</div>
-                        <div class="stat-label">Curiosity</div>
-                    </div>
-                </div>
-            </div>
+<!-- WAVE -->
+<div class="wave"><svg viewBox="0 0 1440 50" preserveAspectRatio="none"><path d="M0,25 C360,50 1080,0 1440,25 L1440,50 L0,50 Z" fill="rgba(0,212,255,0.04)"/></svg></div>
 
-            <div class="about-text reveal-right">
-                <h3>Embedded Systems &amp; <span>IoT Engineer</span></h3>
-                <p>
-                    I'm an engineering student at ESPRIT Tunis, specializing in Embedded Systems and IoT.
-                    I love designing intelligent connected systems — from writing efficient firmware in C/C++
-                    to building complete IoT pipelines with cloud integration and real-time dashboards.
-                </p>
-                <p>
-                    My passion extends to PCB design, real-time operating systems, and exploring edge AI
-                    for embedded devices. I'm constantly pushing the boundary between hardware and software
-                    to create meaningful, real-world solutions.
-                </p>
-                <div class="about-info-grid">
-                    <div class="info-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <div>
-                            <span>Location</span>
-                            <strong>Tunis, Tunisia 🇹🇳</strong>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-graduation-cap"></i>
-                        <div>
-                            <span>University</span>
-                            <strong>ESPRIT</strong>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-code"></i>
-                        <div>
-                            <span>Specialty</span>
-                            <strong>Embedded &amp; IoT</strong>
-                        </div>
-                    </div>
-                    <div class="info-item">
-                        <i class="fas fa-search"></i>
-                        <div>
-                            <span>Interests</span>
-                            <strong>RTOS, Edge AI, MQTT</strong>
-                        </div>
-                    </div>
-                </div>
-                <a href="https://github.com/bousnina-loujein" target="_blank" class="btn btn-primary">
-                    <i class="fab fa-github"></i> GitHub Profile
-                </a>
-            </div>
-        </div>
-    </section>
+<!-- ABOUT -->
+<div class="s-wrap">
+<section id="about">
+  <div class="s-head reveal"><span class="s-label">// 01. about</span><h2 class="s-title">Who Am I?</h2><div class="s-line"></div></div>
+  <div class="about-grid">
+    <div class="about-img-wrap reveal-l">
+      <div class="about-photo">
+        <img src="data:image/png;base64,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" alt="Loujein Bousnina">
+        <div class="corner tl"></div>
+        <div class="corner br"></div>
+      </div>
+      <div class="about-stats">
+        <div class="stat-card"><div class="stat-num" data-target="6">0</div><div class="stat-lbl">Projects</div></div>
+        <div class="stat-card"><div class="stat-num" data-target="3">0</div><div class="stat-lbl">Years</div></div>
+        <div class="stat-card"><div class="stat-num" data-target="10">0</div><div class="stat-lbl">Technologies</div></div>
+        <div class="stat-card"><div class="stat-num">∞</div><div class="stat-lbl">Curiosity</div></div>
+      </div>
+    </div>
+    <div class="about-text reveal-r">
+      <h3>Embedded Systems &amp; <span>IoT Engineer</span></h3>
+      <p>I'm an engineering student at ESPRIT Tunis, specializing in Embedded Systems and IoT. I love designing intelligent connected systems — from writing efficient firmware in C/C++ to building complete IoT pipelines with cloud integration.</p>
+      <p>My passion extends to PCB design, real-time operating systems, and exploring edge AI for embedded devices. I'm constantly pushing the boundary between hardware and software to create meaningful, real-world solutions.</p>
+      <div class="info-grid">
+        <div class="info-item"><i class="fas fa-map-marker-alt"></i><div><span>Location</span><strong>Tunis, Tunisia 🇹🇳</strong></div></div>
+        <div class="info-item"><i class="fas fa-graduation-cap"></i><div><span>University</span><strong>ESPRIT</strong></div></div>
+        <div class="info-item"><i class="fas fa-code"></i><div><span>Specialty</span><strong>Embedded &amp; IoT</strong></div></div>
+        <div class="info-item"><i class="fas fa-search"></i><div><span>Interests</span><strong>RTOS, Edge AI, MQTT</strong></div></div>
+      </div>
+      <a href="https://github.com/bousnina-loujein" target="_blank" class="btn btn-primary"><i class="fab fa-github"></i>GitHub Profile</a>
+    </div>
+  </div>
+</section>
 </div>
 
-<!-- ===== SKILLS ===== -->
-<div class="section-wrapper">
-    <section id="skills">
-        <div class="section-header reveal">
-            <span class="section-label">// 02. skills</span>
-            <h2 class="section-title">Tech Stack</h2>
-            <div class="section-line"></div>
-        </div>
-        <div class="skills-categories">
+<!-- WAVE -->
+<div class="wave flip"><svg viewBox="0 0 1440 50" preserveAspectRatio="none"><path d="M0,25 C480,0 960,50 1440,25 L1440,50 L0,50 Z" fill="rgba(155,92,246,0.04)"/></svg></div>
 
-            <div class="reveal">
-                <p class="skill-category-title">// Embedded &amp; Hardware</p>
-                <div class="skills-grid">
-                    <div class="skill-card"><span class="skill-icon">⚡</span><span class="skill-name">C / C++</span></div>
-                    <div class="skill-card"><span class="skill-icon">🔌</span><span class="skill-name">ESP32</span></div>
-                    <div class="skill-card"><span class="skill-icon">🖥️</span><span class="skill-name">PIC / MikroC</span></div>
-                    <div class="skill-card"><span class="skill-icon">🔧</span><span class="skill-name">Arduino</span></div>
-                    <div class="skill-card"><span class="skill-icon">⏱️</span><span class="skill-name">RTOS</span></div>
-                    <div class="skill-card"><span class="skill-icon">📟</span><span class="skill-name">PCB Design</span></div>
-                </div>
-            </div>
+<!-- SKILLS -->
+<div class="s-wrap">
+<section id="skills">
+  <div class="s-head reveal"><span class="s-label">// 02. skills</span><h2 class="s-title">Tech Stack</h2><div class="s-line"></div></div>
+  <div class="skill-cats">
+    <div class="reveal">
+      <p class="cat-title">// Embedded &amp; Hardware</p>
+      <div class="skills-grid">
+        <div class="skill-card"><div class="sk-bg"></div><span class="skill-icon"><i class="fas fa-code"></i></span><span class="skill-name">C / C++</span></div>
+        <div class="skill-card"><div class="sk-bg"></div><span class="skill-icon"><i class="fas fa-microchip"></i></span><span class="skill-name">ESP32</span></div>
+        <div class="skill-card"><div class="sk-bg"></div><span class="skill-icon"><i class="fas fa-memory"></i></span><span class="skill-name">PIC / MikroC</span></div>
+        <div class="skill-card"><div class="sk-bg"></div><span class="skill-icon"><i class="fas fa-bolt"></i></span><span class="skill-name">Arduino</span></div>
+        <div class="skill-card"><div class="sk-bg"></div><span class="skill-icon"><i class="fas fa-clock"></i></span><span class="skill-name">RTOS</span></div>
+        <div class="skill-card"><div class="sk-bg"></div><span class="skill-icon"><i class="fas fa-layer-group"></i></span><span class="skill-name">PCB Design</span></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <p class="cat-title">// IoT &amp; Connectivity</p>
+      <div class="skills-grid">
+        <div class="skill-card"><div class="sk-bg"></div><span class="skill-icon"><i class="fas fa-network-wired"></i></span><span class="skill-name">MQTT</span></div>
+        <div class="skill-card"><div class="sk-bg"></div><span class="skill-icon"><i class="fas fa-diagram-project"></i></span><span class="skill-name">Node-RED</span></div>
+        <div class="skill-card"><div class="sk-bg"></div><span class="skill-icon"><i class="fas fa-satellite-dish"></i></span><span class="skill-name">LoRa / GPS</span></div>
+        <div class="skill-card"><div class="sk-bg"></div><span class="skill-icon"><i class="fas fa-wifi"></i></span><span class="skill-name">WiFi / BLE</span></div>
+        <div class="skill-card"><div class="sk-bg"></div><span class="skill-icon"><i class="fas fa-cloud"></i></span><span class="skill-name">Cloud IoT</span></div>
+        <div class="skill-card"><div class="sk-bg"></div><span class="skill-icon"><i class="fas fa-plug"></i></span><span class="skill-name">REST APIs</span></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <p class="cat-title">// Software &amp; Tools</p>
+      <div class="skills-grid">
+        <div class="skill-card"><div class="sk-bg"></div><span class="skill-icon"><i class="fas fa-mobile-screen"></i></span><span class="skill-name">Flutter</span></div>
+        <div class="skill-card"><div class="sk-bg"></div><span class="skill-icon"><i class="fas fa-database"></i></span><span class="skill-name">MongoDB</span></div>
+        <div class="skill-card"><div class="sk-bg"></div><span class="skill-icon"><i class="fab fa-python"></i></span><span class="skill-name">Python</span></div>
+        <div class="skill-card"><div class="sk-bg"></div><span class="skill-icon"><i class="fas fa-drafting-compass"></i></span><span class="skill-name">KiCad</span></div>
+        <div class="skill-card"><div class="sk-bg"></div><span class="skill-icon"><i class="fab fa-git-alt"></i></span><span class="skill-name">Git / GitHub</span></div>
+        <div class="skill-card"><div class="sk-bg"></div><span class="skill-icon"><i class="fab fa-linux"></i></span><span class="skill-name">Linux</span></div>
+      </div>
+    </div>
+  </div>
 
-            <div class="reveal">
-                <p class="skill-category-title">// IoT &amp; Connectivity</p>
-                <div class="skills-grid">
-                    <div class="skill-card"><span class="skill-icon">📡</span><span class="skill-name">MQTT</span></div>
-                    <div class="skill-card"><span class="skill-icon">🌊</span><span class="skill-name">Node-RED</span></div>
-                    <div class="skill-card"><span class="skill-icon">🛰️</span><span class="skill-name">LoRa / GPS</span></div>
-                    <div class="skill-card"><span class="skill-icon">📶</span><span class="skill-name">WiFi / BLE</span></div>
-                    <div class="skill-card"><span class="skill-icon">☁️</span><span class="skill-name">Cloud IoT</span></div>
-                    <div class="skill-card"><span class="skill-icon">🔗</span><span class="skill-name">REST APIs</span></div>
-                </div>
-            </div>
+  <!-- SKILL BARS -->
+  <div class="skill-bars-wrap reveal" style="max-width:700px;margin:3rem auto 0">
+    <div class="sb-item"><div class="sb-header"><span class="sb-name"><i class="fas fa-code"></i>C / C++</span><span class="sb-pct">90%</span></div><div class="sb-track"><div class="sb-fill" data-w="90"></div></div></div>
+    <div class="sb-item"><div class="sb-header"><span class="sb-name"><i class="fas fa-microchip"></i>ESP32 / Arduino</span><span class="sb-pct">85%</span></div><div class="sb-track"><div class="sb-fill" data-w="85"></div></div></div>
+    <div class="sb-item"><div class="sb-header"><span class="sb-name"><i class="fas fa-network-wired"></i>MQTT / Node-RED</span><span class="sb-pct">80%</span></div><div class="sb-track"><div class="sb-fill" data-w="80"></div></div></div>
+    <div class="sb-item"><div class="sb-header"><span class="sb-name"><i class="fas fa-layer-group"></i>PCB Design</span><span class="sb-pct">75%</span></div><div class="sb-track"><div class="sb-fill" data-w="75"></div></div></div>
+    <div class="sb-item"><div class="sb-header"><span class="sb-name"><i class="fab fa-python"></i>Python</span><span class="sb-pct">70%</span></div><div class="sb-track"><div class="sb-fill" data-w="70"></div></div></div>
+  </div>
 
-            <div class="reveal">
-                <p class="skill-category-title">// Software &amp; Tools</p>
-                <div class="skills-grid">
-                    <div class="skill-card"><span class="skill-icon">📱</span><span class="skill-name">Flutter</span></div>
-                    <div class="skill-card"><span class="skill-icon">🍃</span><span class="skill-name">MongoDB</span></div>
-                    <div class="skill-card"><span class="skill-icon">🐍</span><span class="skill-name">Python</span></div>
-                    <div class="skill-card"><span class="skill-icon">🔷</span><span class="skill-name">KiCad</span></div>
-                    <div class="skill-card"><span class="skill-icon">🐙</span><span class="skill-name">Git / GitHub</span></div>
-                    <div class="skill-card"><span class="skill-icon">🐧</span><span class="skill-name">Linux</span></div>
-                </div>
-            </div>
-
-        </div>
-    </section>
+</section>
 </div>
 
-<!-- ===== PROJECTS ===== -->
-<div class="section-wrapper">
-    <section id="projects">
-        <div class="section-header reveal">
-            <span class="section-label">// 03. projects</span>
-            <h2 class="section-title">Featured Work</h2>
-            <div class="section-line"></div>
-        </div>
-        <div class="projects-grid">
+<!-- WAVE -->
+<div class="wave"><svg viewBox="0 0 1440 50" preserveAspectRatio="none"><path d="M0,25 C360,50 1080,0 1440,25 L1440,50 L0,50 Z" fill="rgba(0,212,255,0.04)"/></svg></div>
 
-            <div class="project-card reveal">
-                <div class="project-header">
-                    <span class="project-icon">🚂</span>
-                    <div class="project-links">
-                        <a href="https://github.com/bousnina-loujein/sncft-pcb-design" target="_blank" title="View on GitHub">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                </div>
-                <h3>SNCFT Smart Train Tracking</h3>
-                <p>Custom PCB layout for a smart train tracking system featuring ESP32-based circuits, GPS module integration, and power regulation components for real-time rail infrastructure monitoring.</p>
-                <div class="project-tags">
-                    <span class="tag">ESP32</span>
-                    <span class="tag">PCB Design</span>
-                    <span class="tag">GPS</span>
-                    <span class="tag">KiCad</span>
-                </div>
-            </div>
-
-            <div class="project-card reveal">
-                <div class="project-header">
-                    <span class="project-icon">🌱</span>
-                    <div class="project-links">
-                        <a href="https://github.com/bousnina-loujein/projet_CupCarbon_Agrifarm" target="_blank" title="View on GitHub">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                </div>
-                <h3>AgriFarm IoT Simulation</h3>
-                <p>Smart agriculture IoT system simulated with CupCarbon. Monitors soil conditions, temperature, and humidity while automating irrigation decisions using wireless sensor networks.</p>
-                <div class="project-tags">
-                    <span class="tag">CupCarbon</span>
-                    <span class="tag">IoT</span>
-                    <span class="tag">WSN</span>
-                    <span class="tag">Smart Agri</span>
-                </div>
-            </div>
-
-            <div class="project-card reveal">
-                <div class="project-header">
-                    <span class="project-icon">🏠</span>
-                    <div class="project-links">
-                        <a href="https://github.com/bousnina-loujein/smart_home_mikroC" target="_blank" title="View on GitHub">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                </div>
-                <h3>Smart Home Energy Monitor</h3>
-                <p>PIC16F877-based energy monitoring system with LCD display and automation features. Tracks real-time power consumption and controls home devices through intelligent sensor inputs.</p>
-                <div class="project-tags">
-                    <span class="tag">PIC16F877</span>
-                    <span class="tag">MikroC</span>
-                    <span class="tag">LCD</span>
-                    <span class="tag">Automation</span>
-                </div>
-            </div>
-
-            <div class="project-card reveal">
-                <div class="project-header">
-                    <span class="project-icon">🅿️</span>
-                    <div class="project-links">
-                        <a href="https://github.com/bousnina-loujein/Projet_Parking_-C" target="_blank" title="View on GitHub">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                </div>
-                <h3>Smart Parking System</h3>
-                <p>Embedded parking management system in C. Detects available spaces using sensors, manages entry/exit barriers, and displays real-time availability — a complete embedded solution for urban parking.</p>
-                <div class="project-tags">
-                    <span class="tag">C</span>
-                    <span class="tag">Embedded</span>
-                    <span class="tag">Sensors</span>
-                    <span class="tag">Automation</span>
-                </div>
-            </div>
-
-            <div class="project-card reveal">
-                <div class="project-header">
-                    <span class="project-icon">🔌</span>
-                    <div class="project-links">
-                        <a href="https://github.com/bousnina-loujein/carte_d-extension_PCB" target="_blank" title="View on GitHub">
-                            <i class="fab fa-github"></i>
-                        </a>
-                    </div>
-                </div>
-                <h3>PCB Extension Card</h3>
-                <p>Custom extension card PCB design for expanding microcontroller capabilities. Features additional I/O interfaces, signal conditioning circuits, and modular connector layout for embedded prototyping.</p>
-                <div class="project-tags">
-                    <span class="tag">PCB Design</span>
-                    <span class="tag">Hardware</span>
-                    <span class="tag">Prototyping</span>
-                </div>
-            </div>
-
-        </div>
-    </section>
+<!-- PROJECTS -->
+<div class="s-wrap">
+<section id="projects">
+  <div class="s-head reveal"><span class="s-label">// 03. projects</span><h2 class="s-title">Featured Work</h2><div class="s-line"></div></div>
+  <div class="projects-grid">
+    <div class="project-card reveal"><div class="proj-glow"></div><div class="proj-head"><span class="proj-icon">🚂</span><div class="proj-links"><a href="https://github.com/bousnina-loujein/sncft-pcb-design" target="_blank"><i class="fab fa-github"></i></a></div></div><h3>SNCFT Smart Train Tracking</h3><p>Custom PCB layout for a smart train tracking system featuring ESP32-based circuits, GPS module integration, and power regulation components for real-time rail infrastructure monitoring.</p><div class="tags"><span class="tag">ESP32</span><span class="tag">PCB Design</span><span class="tag">GPS</span><span class="tag">KiCad</span></div></div>
+    <div class="project-card reveal"><div class="proj-glow"></div><div class="proj-head"><span class="proj-icon">🌱</span><div class="proj-links"><a href="https://github.com/bousnina-loujein/projet_CupCarbon_Agrifarm" target="_blank"><i class="fab fa-github"></i></a></div></div><h3>AgriFarm IoT Simulation</h3><p>Smart agriculture IoT system simulated with CupCarbon. Monitors soil conditions, temperature, and humidity while automating irrigation decisions using wireless sensor networks.</p><div class="tags"><span class="tag">CupCarbon</span><span class="tag">IoT</span><span class="tag">WSN</span><span class="tag">Smart Agri</span></div></div>
+    <div class="project-card reveal"><div class="proj-glow"></div><div class="proj-head"><span class="proj-icon">🏠</span><div class="proj-links"><a href="https://github.com/bousnina-loujein/smart_home_mikroC" target="_blank"><i class="fab fa-github"></i></a></div></div><h3>Smart Home Energy Monitor</h3><p>PIC16F877-based energy monitoring system with LCD display and automation features. Tracks real-time power consumption and controls home devices through intelligent sensor inputs.</p><div class="tags"><span class="tag">PIC16F877</span><span class="tag">MikroC</span><span class="tag">LCD</span><span class="tag">Automation</span></div></div>
+    <div class="project-card reveal"><div class="proj-glow"></div><div class="proj-head"><span class="proj-icon">🅿️</span><div class="proj-links"><a href="https://github.com/bousnina-loujein/Projet_Parking_-C" target="_blank"><i class="fab fa-github"></i></a></div></div><h3>Smart Parking System</h3><p>Embedded parking management system in C. Detects available spaces using sensors, manages entry/exit barriers, and displays real-time availability for urban parking solutions.</p><div class="tags"><span class="tag">C</span><span class="tag">Embedded</span><span class="tag">Sensors</span><span class="tag">Automation</span></div></div>
+    <div class="project-card reveal"><div class="proj-glow"></div><div class="proj-head"><span class="proj-icon">🔌</span><div class="proj-links"><a href="https://github.com/bousnina-loujein/carte_d-extension_PCB" target="_blank"><i class="fab fa-github"></i></a></div></div><h3>PCB Extension Card</h3><p>Custom extension card PCB design for expanding microcontroller capabilities with additional I/O interfaces, signal conditioning circuits, and modular connectors for prototyping.</p><div class="tags"><span class="tag">PCB Design</span><span class="tag">Hardware</span><span class="tag">Prototyping</span></div></div>
+  </div>
+</section>
 </div>
 
-<!-- ===== CONTACT ===== -->
-<div class="section-wrapper">
-    <section id="contact">
-        <div class="section-header reveal">
-            <span class="section-label">// 04. contact</span>
-            <h2 class="section-title">Let's Connect</h2>
-            <div class="section-line"></div>
-        </div>
-        <div class="contact-wrapper">
-            <div class="contact-info reveal-left">
-                <h3>Have a project?<br><span>Let's build it together.</span></h3>
-                <p>
-                    Whether it's an IoT challenge, embedded system design, or just a tech conversation —
-                    I'm always open. Actively looking for internship opportunities and exciting collaborations!
-                </p>
-                <div class="contact-links">
-                    <a href="mailto:loujeinbousnina2020@gmail.com" class="contact-link">
-                        <i class="fas fa-envelope"></i>
-                        <div class="contact-link-text">
-                            <strong>Email</strong>
-                            <span>loujeinbousnina2020@gmail.com</span>
-                        </div>
-                    </a>
-                    <a href="https://github.com/bousnina-loujein" target="_blank" class="contact-link">
-                        <i class="fab fa-github"></i>
-                        <div class="contact-link-text">
-                            <strong>GitHub</strong>
-                            <span>github.com/bousnina-loujein</span>
-                        </div>
-                    </a>
-                    <a href="https://www.linkedin.com/in/loujein-bousnina" target="_blank" class="contact-link">
-                        <i class="fab fa-linkedin"></i>
-                        <div class="contact-link-text">
-                            <strong>LinkedIn</strong>
-                            <span>loujein-bousnina</span>
-                        </div>
-                    </a>
-                </div>
-            </div>
+<!-- WAVE -->
+<div class="wave flip"><svg viewBox="0 0 1440 50" preserveAspectRatio="none"><path d="M0,25 C480,0 960,50 1440,25 L1440,50 L0,50 Z" fill="rgba(155,92,246,0.04)"/></svg></div>
 
-            <form class="contact-form reveal-right" onsubmit="handleSubmit(event)">
-                <div class="form-group">
-                    <label>Your Name</label>
-                    <input type="text" placeholder="Ahmed Ben Ali" required>
-                </div>
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" placeholder="your@email.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Subject</label>
-                    <input type="text" placeholder="Internship / Collaboration / Just saying hi">
-                </div>
-                <div class="form-group">
-                    <label>Message</label>
-                    <textarea placeholder="Tell me about your project or idea..." required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">
-                    <i class="fas fa-paper-plane"></i> Send Message
-                </button>
-            </form>
-        </div>
-    </section>
+<!-- CONTACT -->
+<div class="s-wrap">
+<section id="contact">
+  <div class="s-head reveal"><span class="s-label">// 04. contact</span><h2 class="s-title">Let's Connect</h2><div class="s-line"></div></div>
+  <div class="contact-wrap">
+    <div class="contact-info reveal-l">
+      <h3>Have a project?<br><span>Let's build it.</span></h3>
+      <p>Whether it's an IoT challenge, embedded design, or just a tech conversation — I'm always open. Actively looking for internship opportunities and exciting collaborations!</p>
+      <div class="c-links">
+        <a href="mailto:loujeinbousnina2020@gmail.com" class="c-link"><i class="fas fa-envelope"></i><div><strong>Email</strong><span>loujeinbousnina2020@gmail.com</span></div></a>
+        <a href="https://github.com/bousnina-loujein" target="_blank" class="c-link"><i class="fab fa-github"></i><div><strong>GitHub</strong><span>github.com/bousnina-loujein</span></div></a>
+        <a href="https://www.linkedin.com/in/loujein-bousnina" target="_blank" class="c-link"><i class="fab fa-linkedin"></i><div><strong>LinkedIn</strong><span>loujein-bousnina</span></div></a>
+      </div>
+    </div>
+    <form class="c-form reveal-r" onsubmit="handleSubmit(event)">
+      <div class="fg"><label>Your Name</label><input type="text" placeholder="Ahmed Ben Ali" required></div>
+      <div class="fg"><label>Email</label><input type="email" placeholder="your@email.com" required></div>
+      <div class="fg"><label>Subject</label><input type="text" placeholder="Internship / Collaboration / Hello"></div>
+      <div class="fg"><label>Message</label><textarea placeholder="Tell me about your project..." required></textarea></div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;cursor:none"><i class="fas fa-paper-plane"></i>Send Message</button>
+    </form>
+  </div>
+</section>
 </div>
 
-<!-- ===== FOOTER ===== -->
-<footer>
-    <p>Designed &amp; Built with ❤️ by <span>Loujein Bousnina</span> &nbsp;·&nbsp; 2024 &nbsp;·&nbsp; Tunis, Tunisia 🇹🇳</p>
-</footer>
+<footer><p>Designed &amp; Built with ❤️ by <span>Loujein Bousnina</span> &nbsp;·&nbsp; 2024 &nbsp;·&nbsp; Tunis, Tunisia 🇹🇳</p></footer>
 
-<!-- ===== SCRIPTS ===== -->
 <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
 <script>
-    /* ===== PARTICLES.JS CONFIG ===== */
-    particlesJS('particles-js', {
-        particles: {
-            number: { value: 55, density: { enable: true, value_area: 900 } },
-            color: { value: ['#00d4ff', '#9b5cf6', '#00ff88'] },
-            shape: { type: 'circle' },
-            opacity: {
-                value: 0.45,
-                random: true,
-                anim: { enable: true, speed: 0.8, opacity_min: 0.1, sync: false }
-            },
-            size: { value: 2.5, random: true, anim: { enable: true, speed: 2, size_min: 0.5 } },
-            line_linked: {
-                enable: true,
-                distance: 160,
-                color: '#00d4ff',
-                opacity: 0.1,
-                width: 1
-            },
-            move: {
-                enable: true,
-                speed: 1.2,
-                direction: 'none',
-                random: true,
-                straight: false,
-                out_mode: 'out',
-                bounce: false
-            }
-        },
-        interactivity: {
-            detect_on: 'canvas',
-            events: {
-                onhover: { enable: true, mode: 'grab' },
-                onclick: { enable: true, mode: 'push' },
-                resize: true
-            },
-            modes: {
-                grab: { distance: 160, line_linked: { opacity: 0.6 } },
-                push: { particles_nb: 3 }
-            }
-        },
-        retina_detect: true
-    });
+/* CURSOR */
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing)})();
 
-    /* ===== TYPED.JS ===== */
-    new Typed('#typed', {
-        strings: [
-            'Embedded Systems Engineer',
-            'IoT Developer',
-            'PCB Designer',
-            'Firmware Developer',
-            'ESPRIT Student',
-            'Connected Systems Builder'
-        ],
-        typeSpeed: 55,
-        backSpeed: 30,
-        backDelay: 2200,
-        startDelay: 500,
-        loop: true,
-        cursorChar: '|'
-    });
+/* SCROLL PROGRESS */
+window.addEventListener('scroll',()=>{
+  const p=(window.scrollY/(document.body.scrollHeight-window.innerHeight))*100;
+  document.getElementById('progress').style.width=p+'%';
+  const nav=document.getElementById('nav');
+  nav.style.background=window.scrollY>60?'rgba(6,11,24,.97)':'rgba(6,11,24,.8)';
+  nav.style.padding=window.scrollY>60?'.85rem 3rem':'1.1rem 3rem';
+});
 
-    /* ===== MOBILE MENU ===== */
-    function toggleMenu() {
-        document.getElementById('navLinks').classList.toggle('open');
-    }
-    function closeMenu() {
-        document.getElementById('navLinks').classList.remove('open');
-    }
+/* PARTICLES */
+particlesJS('particles-js',{particles:{number:{value:55,density:{enable:true,value_area:900}},color:{value:['#00d4ff','#9b5cf6','#00ff88']},shape:{type:'circle'},opacity:{value:.4,random:true,anim:{enable:true,speed:.8,opacity_min:.1}},size:{value:2.5,random:true},line_linked:{enable:true,distance:160,color:'#00d4ff',opacity:.1,width:1},move:{enable:true,speed:1.2,direction:'none',random:true,out_mode:'out'}},interactivity:{detect_on:'canvas',events:{onhover:{enable:true,mode:'grab'},onclick:{enable:true,mode:'push'}},modes:{grab:{distance:160,line_linked:{opacity:.5}},push:{particles_nb:3}}},retina_detect:true});
 
-    /* ===== NAVBAR SCROLL EFFECT ===== */
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 60) {
-            navbar.style.background = 'rgba(5,10,20,0.97)';
-            navbar.style.padding = '0.85rem 3rem';
-        } else {
-            navbar.style.background = 'rgba(5,10,20,0.75)';
-            navbar.style.padding = '1.25rem 3rem';
-        }
-    });
+/* TYPED */
+new Typed('#typed',{strings:['Embedded Systems Engineer','IoT Developer','PCB Designer','Firmware Developer','ESPRIT Student'],typeSpeed:55,backSpeed:30,backDelay:2200,startDelay:500,loop:true,cursorChar:'|'});
 
-    /* ===== SCROLL REVEAL ===== */
-    const revealObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+/* MENU */
+function toggleMenu(){document.getElementById('navLinks').classList.toggle('open')}
+function closeMenu(){document.getElementById('navLinks').classList.remove('open')}
 
-    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
-        revealObserver.observe(el);
-    });
+/* SCROLL REVEAL */
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>obs.observe(el));
 
-    /* Stagger cards */
-    document.querySelectorAll('.skill-card').forEach((el, i) => {
-        el.style.transitionDelay = `${(i % 6) * 0.07}s`;
-    });
+/* STAGGER */
+document.querySelectorAll('.skill-card').forEach((el,i)=>el.style.transitionDelay=`${(i%6)*.07}s`);
+document.querySelectorAll('.project-card').forEach((el,i)=>el.style.transitionDelay=`${i*.1}s`);
 
-    document.querySelectorAll('.project-card').forEach((el, i) => {
-        el.style.transitionDelay = `${i * 0.1}s`;
-    });
+/* COUNTER ANIMATION */
+const countObs=new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting&&!e.target.dataset.counted){
+    e.target.dataset.counted='1';
+    const target=+e.target.dataset.target;
+    let cur=0;const step=target/40;
+    const t=setInterval(()=>{cur=Math.min(cur+step,target);e.target.textContent=Math.floor(cur)+(cur>=target?'+':'');if(cur>=target)clearInterval(t)},40);
+  }
+}),{threshold:.5});
+document.querySelectorAll('[data-target]').forEach(el=>countObs.observe(el));
 
-    /* ===== FORM HANDLER ===== */
-    function handleSubmit(e) {
-        e.preventDefault();
-        const btn = e.target.querySelector('button[type="submit"]');
-        const original = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
-        btn.style.background = 'linear-gradient(135deg, #00ff88, #00d4ff)';
-        btn.disabled = true;
-        setTimeout(() => {
-            btn.innerHTML = original;
-            btn.style.background = '';
-            btn.disabled = false;
-            e.target.reset();
-        }, 3500);
-    }
+/* PROJECT CARD GLOW */
+document.querySelectorAll('.project-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=((e.clientX-r.left)/r.width)*100;
+    const y=((e.clientY-r.top)/r.height)*100;
+    card.style.setProperty('--mx',x+'%');
+    card.style.setProperty('--my',y+'%');
+  });
+});
 
-    /* ===== SMOOTH ACTIVE NAV ===== */
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-links a');
+/* 3D TILT */
+document.querySelectorAll('.project-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=(e.clientX-r.left-r.width/2)/(r.width/2);
+    const y=(e.clientY-r.top-r.height/2)/(r.height/2);
+    card.style.transform=`perspective(800px) rotateY(${x*6}deg) rotateX(${-y*4}deg) translateY(-7px)`;
+  });
+  card.addEventListener('mouseleave',()=>{card.style.transform='';});
+});
 
-    window.addEventListener('scroll', () => {
-        let current = '';
-        sections.forEach(s => {
-            if (window.scrollY >= s.offsetTop - 200) current = s.getAttribute('id');
-        });
-        navLinks.forEach(a => {
-            a.style.color = a.getAttribute('href') === '#' + current
-                ? 'var(--accent-cyan)'
-                : '';
-        });
-    });
+/* FORM */
+function handleSubmit(e){
+  e.preventDefault();
+  const btn=e.target.querySelector('button');
+  btn.innerHTML='<i class="fas fa-check"></i> Sent!';
+  btn.style.background='linear-gradient(135deg,#00ff88,#00d4ff)';
+  btn.disabled=true;
+  setTimeout(()=>{btn.innerHTML='<i class="fas fa-paper-plane"></i> Send Message';btn.style.background='';btn.disabled=false;e.target.reset();},3500);
+}
+
+/* ACTIVE NAV */
+window.addEventListener('scroll',()=>{
+  let cur='';
+  document.querySelectorAll('section[id]').forEach(s=>{if(window.scrollY>=s.offsetTop-200)cur=s.id});
+  document.querySelectorAll('.nav-links a').forEach(a=>{a.style.color=a.getAttribute('href')==='#'+cur?'var(--cyan)':''});
+});
 </script>
 </body>
 </html>
