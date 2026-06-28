@@ -504,19 +504,48 @@ footer span{color:var(--cyan)}
         <a href="https://www.linkedin.com/in/loujein-bousnina" target="_blank" class="c-link"><i class="fab fa-linkedin"></i><div><strong>LinkedIn</strong><span>loujein-bousnina</span></div></a>
       </div>
     </div>
-    <form class="c-form reveal-r" action="https://formspree.io/f/mkolbqql" method="POST">
+    <form class="c-form reveal-r" id="contact-form">
       <input type="hidden" name="_subject" value="New message from portfolio!">
       <div class="fg"><label>Your Name</label><input type="text" name="name" placeholder="Your full name" required></div>
       <div class="fg"><label>Email</label><input type="email" name="email" placeholder="your@email.com" required></div>
       <div class="fg"><label>Subject</label><input type="text" name="subject" placeholder="Internship / Collaboration / Hello"></div>
       <div class="fg"><label>Message</label><textarea name="message" placeholder="Tell me about your project..." required></textarea></div>
-      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;cursor:none"><i class="fas fa-paper-plane"></i>Send Message</button>
+      <button type="submit" class="btn btn-primary" id="submit-btn" style="width:100%;justify-content:center;cursor:none"><i class="fas fa-paper-plane"></i>Send Message</button>
+      <div id="form-success" style="display:none;text-align:center;padding:2rem;background:rgba(0,255,136,.08);border:1px solid var(--green);border-radius:14px;margin-top:1rem">
+        <i class="fas fa-check-circle" style="font-size:2.5rem;color:var(--green);margin-bottom:.75rem;display:block"></i>
+        <strong style="color:var(--green);font-size:1.1rem">Message sent successfully!</strong>
+        <p style="color:var(--text-muted);margin-top:.4rem;font-size:.9rem">I'll get back to you as soon as possible 🚀</p>
+      </div>
     </form>
   </div>
 </section>
 </div>
 
 <footer><p>Designed &amp; Built with ❤️ by <span>Loujein Bousnina</span> &nbsp;·&nbsp; 2024 &nbsp;·&nbsp; Tunis, Tunisia 🇹🇳</p></footer>
+<script>
+document.getElementById('contact-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+  const data = new FormData(this);
+  try {
+    const res = await fetch('https://formspree.io/f/mkolbqql', { method:'POST', body:data, headers:{Accept:'application/json'} });
+    if(res.ok) {
+      this.querySelectorAll('.fg, #submit-btn').forEach(el => el.style.display='none');
+      document.getElementById('form-success').style.display='block';
+    } else {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+      alert('Something went wrong. Please try again.');
+    }
+  } catch(err) {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+    alert('Network error. Please try again.');
+  }
+});
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js"></script>
