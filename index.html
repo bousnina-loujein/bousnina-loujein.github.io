@@ -457,7 +457,27 @@ footer span{color:var(--cyan)}
 <section id="projects">
   <div class="s-head reveal"><span class="s-label">// 03. projects</span><h2 class="s-title">Featured Work</h2><div class="s-line"></div></div>
   <div class="projects-grid">
-    <div class="project-card reveal"><div class="proj-glow"></div><div class="proj-head"><span class="proj-icon">🚂</span><div class="proj-links"><a href="https://github.com/bousnina-loujein/sncft-pcb-design" target="_blank"><i class="fab fa-github"></i></a></div></div><h3>SNCFT Smart Train Tracking</h3><p>Custom PCB layout for a smart train tracking system featuring ESP32-based circuits, GPS module integration, and power regulation components for real-time rail infrastructure monitoring.</p><div class="tags"><span class="tag">ESP32</span><span class="tag">PCB Design</span><span class="tag">GPS</span><span class="tag">KiCad</span></div></div>
+    <div class="project-card spotlight reveal">
+      <div class="spotlight-frame">
+        <div class="spotlight-dots"><span></span><span></span><span></span></div>
+        <div class="spotlight-code">
+          <span class="cm">// SNCFT Train Tracker — ESP32 firmware</span><br>
+          <span class="kw">#include</span> <span class="str">&lt;TinyGPS++.h&gt;</span><br>
+          <span class="kw">#include</span> <span class="str">&lt;PubSubClient.h&gt;</span><br><br>
+          <span class="kw">void</span> <span class="fn">loop</span>() &#123;<br>
+          &nbsp;&nbsp;<span class="kw">if</span> (gps.<span class="fn">location</span>.<span class="fn">isValid</span>()) &#123;<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;mqtt.<span class="fn">publish</span>(<span class="str">"train/gps"</span>, payload);<br>
+          &nbsp;&nbsp;&#125;<br>
+          &#125;
+        </div>
+      </div>
+      <div class="spotlight-info">
+        <div class="proj-head"><div class="proj-links"><a href="https://github.com/bousnina-loujein/sncft-pcb-design" target="_blank" style="cursor:pointer"><i class="fab fa-github"></i></a></div></div>
+        <h3 style="font-size:1.3rem;margin-bottom:.8rem">SNCFT Smart Train Tracking</h3>
+        <p>Custom PCB layout for a smart train tracking system featuring ESP32-based circuits, GPS module integration, and power regulation components for real-time rail infrastructure monitoring.</p>
+        <div class="tags" style="margin-top:1rem"><span class="tag">ESP32</span><span class="tag">PCB Design</span><span class="tag">GPS</span><span class="tag">KiCad</span><span class="tag">MQTT</span></div>
+      </div>
+    </div>
     <div class="project-card reveal"><div class="proj-glow"></div><div class="proj-head"><span class="proj-icon">🌱</span><div class="proj-links"><a href="https://github.com/bousnina-loujein/projet_CupCarbon_Agrifarm" target="_blank"><i class="fab fa-github"></i></a></div></div><h3>AgriFarm IoT Simulation</h3><p>Smart agriculture IoT system simulated with CupCarbon. Monitors soil conditions, temperature, and humidity while automating irrigation decisions using wireless sensor networks.</p><div class="tags"><span class="tag">CupCarbon</span><span class="tag">IoT</span><span class="tag">WSN</span><span class="tag">Smart Agri</span></div></div>
     <div class="project-card reveal"><div class="proj-glow"></div><div class="proj-head"><span class="proj-icon">🏠</span><div class="proj-links"><a href="https://github.com/bousnina-loujein/smart_home_mikroC" target="_blank"><i class="fab fa-github"></i></a></div></div><h3>Smart Home Energy Monitor</h3><p>PIC16F877-based energy monitoring system with LCD display and automation features. Tracks real-time power consumption and controls home devices through intelligent sensor inputs.</p><div class="tags"><span class="tag">PIC16F877</span><span class="tag">MikroC</span><span class="tag">LCD</span><span class="tag">Automation</span></div></div>
     <div class="project-card reveal"><div class="proj-glow"></div><div class="proj-head"><span class="proj-icon">🅿️</span><div class="proj-links"><a href="https://github.com/bousnina-loujein/Projet_Parking_-C" target="_blank"><i class="fab fa-github"></i></a></div></div><h3>Smart Parking System</h3><p>Embedded parking management system in C. Detects available spaces using sensors, manages entry/exit barriers, and displays real-time availability for urban parking solutions.</p><div class="tags"><span class="tag">C</span><span class="tag">Embedded</span><span class="tag">Sensors</span><span class="tag">Automation</span></div></div>
@@ -574,6 +594,37 @@ function handleSubmit(e){
   btn.disabled=true;
   setTimeout(()=>{btn.innerHTML='<i class="fas fa-paper-plane"></i> Send Message';btn.style.background='';btn.disabled=false;e.target.reset();},3500);
 }
+
+/* RIPPLE */
+document.querySelectorAll('.btn').forEach(btn=>{
+  btn.addEventListener('click',function(e){
+    const r=document.createElement('span');
+    r.className='ripple';
+    const rect=this.getBoundingClientRect();
+    r.style.left=(e.clientX-rect.left)+'px';
+    r.style.top=(e.clientY-rect.top)+'px';
+    this.appendChild(r);
+    setTimeout(()=>r.remove(),700);
+  });
+});
+
+/* SKILL BARS */
+const sbObs=new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting){
+    e.target.querySelectorAll('.sb-fill').forEach(bar=>{
+      bar.style.width=bar.dataset.w+'%';
+      setTimeout(()=>bar.classList.add('glow'),1200);
+    });
+    sbObs.unobserve(e.target);
+  }
+}),{threshold:.3});
+document.querySelectorAll('.skill-bars-wrap').forEach(el=>sbObs.observe(el));
+
+/* BACK TO TOP */
+const btt=document.getElementById('btt');
+window.addEventListener('scroll',()=>{
+  btt.classList.toggle('show',window.scrollY>400);
+});
 
 /* ACTIVE NAV */
 window.addEventListener('scroll',()=>{
